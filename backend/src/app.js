@@ -34,7 +34,6 @@ app.get('/', (req, res, next) => {
 // Search by keywords | params e.g. ?keywords=["skype","boxer"]
 app.get('/search', async (req, res, next) => {
   let keywords = req.query['keywords'];
-  let groups = [];
 
   // try {
   //   if (searchIndex.length === 0) {
