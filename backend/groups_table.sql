@@ -1,8 +1,8 @@
 IF object_id('groups', 'U') is null
 	CREATE TABLE groups (
 		[id] int not null identity,
-		[group_id] nvarchar(255) not null,
-		[description] nvarchar(max),
-		[keywords] nvarchar(max),
+		[group_id] nvarchar(55) not null UNIQUE,
+		[description] nvarchar(1000),
+		[keywords] nvarchar(255),
 		PRIMARY KEY( [id] )
 	);
