@@ -6,83 +6,71 @@
  *  4. perform search using index [] -- needs to search using multiple keywords and not just one
  *  5. return top 20 []
  */
-
-const express = require('express');
-const router = express.Router();
-
-const app = express();
 require('dotenv').config();
 
+const express = require('express');
+const app = express();
 const csv = require('csv-parser');
 const fs = require('fs');
 
-const { Index, Document } = require('flexsearch');
-// const searchIndex = new Index({ preset: 'score' });
-const searchIndex = new Document({
-    id: 'id',
-    index: ['keywords', 'name'],
-    store: ['id', 'groupId', 'name', 'description', 'telephone', 'email', 'keywords'],
+//Build in-memory groups index
+const elasticlunr = require('elasticlunr');
+const index = elasticlunr(function() {
+  this.addField('name');
+  this.addField('keywords');
+  //this.setRef('id') //default
 });
-const groupsData = [];
 buildIndex();
+
 
 app.get('/', (req, res, next) => {
   res.send('Hello World!');
 });
 
 
-// Search by keywords | params e.g. ?keywords=["skype","boxer"]
+//Search by keywords | params e.g. ?keywords=["skype","boxer"]
 app.get('/search', async (req, res, next) => {
   let keywords = req.query['keywords'];
-
-  // try {
-  //   if (searchIndex.length === 0) {
-  //     await buildIndex();
-  //   }
-
   if (!keywords) {
     return res.status(500).send({ error: 'Something failed!' });
   }
   console.log('Keywords: ', keywords);
 
-  //search using flexsearch. It will return a list of IDs we used as keys during indexing
-  const result = await searchIndex.search({
-    query: 'mobility | ', //TODO does not work with multiple words
-    enrich: true,
+  //returns an array of { ref: '2', score: 0.65 }. ref = id
+  const result = index.search(keywords, {
+    fields: {
+      name: { boost: 3 }, // group name get more score when matched
+      keywords: { boost: 1 },
+    },
   });
-  console.info('resultsIds: ' + result);
+  console.log('results ', result);
 
+  const groups = getGroupsByIds(result);
+  console.log('results ', groups);
 
-  return res.json(result);
+  return res.json(groups);
 });
 
 
-function getDataByIds(idsList) {
-  const result = [];
-  const data = groupsData;
-  for (let i = 0; i < data.length; i++) {
-    if (idsList.includes(parseInt(data[i].id))) {
-      result.push(data[i]);
-    }
-  }
-  console.log('getByIds', idsList.includes(1));
-  return result;
-}
 
+
+//Read groups csv rows and add them as docs to the search index
 function buildIndex() {
   console.info('building index...');
-  fs.createReadStream('src/data/groups.csv') // read groups csv file
+  fs.createReadStream('src/data/groups.csv')
     .pipe(csv())
-    .on('data', (data) => groupsData.push(data))
-    .on('end', () => {
-      // add to the index
-      for (let i = 0; i < groupsData.length; i++) {
-        const content = groupsData[i].name + ' ' + groupsData[i].keywords;
-        //console.log(groupsData[i]);
-        const key = parseInt(groupsData[i].id);
-        searchIndex.add(groupsData[i]);
-      }
-    });
+    .on('data', (group) => index.addDoc(group));
+}
+
+//Get the groups from the index using ref = id
+function getGroupsByIds(searchResult) {
+  const groups = [];
+  searchResult.forEach(res => {
+    const doc = index.documentStore.getDoc(res.ref);
+    doc.score = res.score;
+    groups.push(doc);
+  });
+  return groups;
 }
 
 
