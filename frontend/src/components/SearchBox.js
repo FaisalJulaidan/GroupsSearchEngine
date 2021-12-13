@@ -2,8 +2,8 @@ import React from 'react';
 import './SearchBox.less';
 
 import { Input } from 'antd';
-const { Search } = Input;
 
+const { Search } = Input;
 
 
 export const SearchBox = () => {
@@ -14,12 +14,12 @@ export const SearchBox = () => {
   return (
     <div id='SearchBox'>
       <Search
-      placeholder="input keywords"
-      enterButton="Search"
-      size="large"
-      onSearch={onSearch}
-      onChange={onChange}
-    />
+        placeholder='Mobility iPhone Skype...'
+        enterButton='Search'
+        size='large'
+        onSearch={onSearch}
+        onChange={onChange}
+      />
     </div>
   );
 };
