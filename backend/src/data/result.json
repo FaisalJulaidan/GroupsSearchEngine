@@ -1,0 +1,18 @@
+ [
+  {
+    "id": "1",
+    "groupId": "OG_12345",
+    "name": "Mobility Support Group",
+    "description": "Best group in the world",
+    "telephone": "148685945",
+    "email": "MSG@company.com",
+    "keywords": "mobility, skype, boxer, android",
+    "score": 0.6666666666666666,
+    "members": [
+      {
+        "name": "Faisal Julaidan"
+      }
+
+    ]
+  }
+]

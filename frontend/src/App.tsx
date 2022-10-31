@@ -14,9 +14,11 @@ function App() {
   return (
     <Router>
       <Layout>
+
         <Header id='Header'>
-          <h1 className='title'>Groups Search Engine</h1>
+          <h1 className='title'>Groups Search Engine<sup>v1</sup></h1>
         </Header>
+
         <Content id='Content'>
           <Switch>
              <Route path='/' exact>
@@ -24,6 +26,7 @@ function App() {
             </Route>
           </Switch>
         </Content>
+
         {/*<Footer id='Footer'>Footer</Footer>*/}
       </Layout>
     </Router>
