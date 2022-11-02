@@ -1,14 +1,17 @@
 import React, { FC, useState } from 'react';
 import './Home.less';
 import { SearchBox, GroupBox } from '../components';
+import { Empty } from 'antd';
 import { group } from '../types';
 import axios from 'axios';
 
 export const Home: FC = () => {
   const [groups, setGroups] = useState<group[]>([]);
   const [keywords, setKeywords] = useState<string[]>([]);
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const onSearchHandler = (keywords: string[]) => {
+    setLoading(true);
     setKeywords(keywords);
 
     // remove empty strings and convert the array to strings split by comma
@@ -32,7 +35,8 @@ export const Home: FC = () => {
       })
       .catch(function (error) {
         console.log('error: ', error);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -40,10 +44,13 @@ export const Home: FC = () => {
       <h2>
         Search Groups by <span>Keywords</span>
       </h2>
-      <SearchBox onSearchHandler={onSearchHandler} />
+      <SearchBox onSearchHandler={onSearchHandler} isLoading={isLoading} />
       {groups.map((group, i) => {
         return <GroupBox key={i} group={group} searchedKeywords={keywords} />;
       })}
+      {!!groups.length ? null : (
+        <Empty description={'No Result'} style={{ marginTop: '20%' }} />
+      )}
     </div>
   );
 };

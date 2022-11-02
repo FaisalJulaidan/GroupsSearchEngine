@@ -4,7 +4,6 @@
 /.pnp
 .pnp.js
 
-
 # Logs
 logs
 *.log
@@ -41,3 +40,4 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
+/frontend/build/

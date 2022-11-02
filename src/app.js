@@ -10,6 +10,7 @@
 // ------------- Import Libraries ------------- //
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const app = express();
 const csv = require('csv-parser');
 const fs = require('fs');
@@ -22,9 +23,14 @@ const index = elasticlunr(function () {
   this.addField('keywords');
   //this.setRef('id') // exists by default
 });
+const customized_stop_words = ['group'];
+elasticlunr.addStopWords(customized_stop_words);
+
+// build the index by adding the groups' data to memory
 buildIndex();
 
 // ------------- Routes ------------- //
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
   // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
@@ -33,7 +39,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get('/', (req, res, next) => {
+app.get('/h', (req, res, next) => {
   res.send('Hello World!');
 });
 
@@ -59,6 +65,11 @@ app.get('/search', async (req, res, next) => {
   console.log('groups ', groups);
 
   return res.json(groups);
+});
+
+// Serve static frontend react app
+app.get('*', async (req, res, next) => {
+  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
 });
 
 // ------------- Functions ------------- //

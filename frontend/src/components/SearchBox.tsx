@@ -7,9 +7,13 @@ const { Search } = Input;
 
 interface SearchBoxProps {
   onSearchHandler: (keywords: string[]) => void;
+  isLoading: boolean;
 }
 
-export const SearchBox: React.FC<SearchBoxProps> = ({ onSearchHandler }) => {
+export const SearchBox: React.FC<SearchBoxProps> = ({
+  onSearchHandler,
+  isLoading,
+}) => {
   const [searchValue, setSearchValue] = useState('');
   const [keywords, setKeywords] = useState<string[]>([]);
 
@@ -22,6 +26,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({ onSearchHandler }) => {
       <Search
         value={searchValue}
         placeholder="Example: Mobility iPhone Skype..."
+        loading={isLoading}
         enterButton="Search"
         size="large"
         onSearch={(value: string) => onSearchHandler(keywords)}
