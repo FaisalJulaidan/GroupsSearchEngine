@@ -1,12 +1,3 @@
-/*
- * TODO:
- *  1. creat flexsearch document index [] (DONE)
- *  2. Load csv file into the index [] (DONE)
- *  3. receive keywords using route /search?keywords [X] (DONE)
- *  4. perform search using index [] -- needs to search using multiple keywords and not just one
- *  5. return top 20 []
- */
-
 // ------------- Import Libraries ------------- //
 require('dotenv').config();
 const express = require('express');
@@ -23,6 +14,7 @@ const index = elasticlunr(function () {
   this.addField('keywords');
   //this.setRef('id') // exists by default
 });
+let loadedKeywords = [];
 const customized_stop_words = ['group'];
 elasticlunr.addStopWords(customized_stop_words);
 
@@ -39,8 +31,12 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get('/h', (req, res, next) => {
+app.get('/healthcheck', (req, res, next) => {
   res.send('Hello World!');
+});
+
+app.get('/keywords', (req, res, next) => {
+  return res.json(loadedKeywords);
 });
 
 // Search by keywords | params e.g. ?keywords=skype,boxer
@@ -79,7 +75,8 @@ function buildIndex() {
   fs.createReadStream('src/data/groups.csv')
     .pipe(csv())
     .on('data', (group) => {
-      console.log(group); // print all groups
+      // console.log(group); // print all groups
+      loadedKeywords = loadedKeywords.concat(group.keywords.split(','));
       index.addDoc(group);
     });
 }

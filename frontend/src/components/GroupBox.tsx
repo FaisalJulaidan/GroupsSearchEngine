@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import './GroupBox.less';
 import { group } from '../types';
 
-import { Tag } from 'antd';
-import { Skeleton } from 'antd';
+import { Skeleton, Tag } from 'antd';
 
-import { PhoneTwoTone, MailTwoTone } from '@ant-design/icons';
+import { MailTwoTone, PhoneTwoTone } from '@ant-design/icons';
 
 interface GroupBoxProps {
   group: group;
@@ -19,7 +18,7 @@ export const GroupBox: React.FC<GroupBoxProps> = ({
   const [loading, setLoading] = useState(false); // Searching?
 
   return (
-    <div id="GroupBox">
+    <div id="GroupBox" className="fade">
       {loading ? (
         <Skeleton active />
       ) : (
@@ -57,7 +56,9 @@ export const GroupBox: React.FC<GroupBoxProps> = ({
                     <Tag
                       key={i}
                       color={
-                        searchedKeywords.includes(word.trim())
+                        searchedKeywords.find((sk) =>
+                          sk.toLowerCase().includes(word.trim().toLowerCase()),
+                        )
                           ? '#2438c3'
                           : '#2538c391'
                       }

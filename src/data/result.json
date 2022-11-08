@@ -1,7 +1,7 @@
- [
+[
   {
     "id": "1",
-    "groupId": "OG_12345",
+    "orgCode": "OG_12345",
     "name": "Mobility Support Group",
     "description": "Best group in the world",
     "telephone": "148685945",
@@ -12,7 +12,6 @@
       {
         "name": "Faisal Julaidan"
       }
-
     ]
   }
 ]

@@ -1,6 +1,6 @@
 export interface group {
   id: string;
-  groupId: string;
+  orgCode: string;
   name: string;
   keywords: string;
   description: string;

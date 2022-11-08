@@ -1,8 +1,8 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './SearchBox.less';
 
-import { Input } from 'antd';
-import { Tag } from 'antd';
+import { Input, Tag } from 'antd';
+
 const { Search } = Input;
 
 interface SearchBoxProps {
@@ -33,6 +33,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
         onChange={(e) => setSearchValue(e.target.value)}
         // onKeyDown={onSpace}
       />
+
       <div className="keywords">
         {keywords?.map((word, i) => {
           if (word != '')

@@ -1,3 +1,4 @@
-id,groupId,name,description,telephone,email,keywords
-1,OG_12345,Mobility Support Group,Best group in the world,148685945,MSG@company.com,"mobility, skype, boxer, android"
-2,OG_6789,Desktop Support Group,Handles Windows desktop stuff,148685945,Desktop@company.com,"windows, nexThink, gpo, junaid"
+id,orgCode ,name                  ,description                  ,telephone,email               ,keywords
+1 ,OG_12345,Mobility Support Group,Best group in the world      ,148685945,MSG@company.com     ,"mobility, skype, boxer, android"
+2 ,OG_6789 ,Desktop Support Group ,Handles Windows desktop stuff,148685945,Desktop@company.com ,"windows, nexThink, gpo, desktop"
+3 ,OG_2222 ,Extranet Support Group,Handles extranet stuff       ,148685945,Extranet@company.com,"netscaler, eft, xenapp, 2FA, SAS, Thales"

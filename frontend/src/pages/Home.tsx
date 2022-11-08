@@ -1,18 +1,19 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import './Home.less';
-import { SearchBox, GroupBox } from '../components';
+import { GroupBox, SearchBox } from '../components';
 import { Empty } from 'antd';
 import { group } from '../types';
 import axios from 'axios';
 
 export const Home: FC = () => {
   const [groups, setGroups] = useState<group[]>([]);
-  const [keywords, setKeywords] = useState<string[]>([]);
+  const [allKeywords, setAllKeywords] = useState<string[]>([]);
+  const [searchedKeywords, setSearchedKeywords] = useState<string[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
 
   const onSearchHandler = (keywords: string[]) => {
     setLoading(true);
-    setKeywords(keywords);
+    setSearchedKeywords(keywords);
 
     // remove empty strings and convert the array to strings split by comma
     const keywordsString: string = keywords
@@ -39,6 +40,24 @@ export const Home: FC = () => {
       .finally(() => setLoading(false));
   };
 
+  // get all keywords once component is mounted
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`/keywords`, {
+        responseType: 'json',
+      })
+      .then(function (response) {
+        console.log('success: ', response);
+        // @ts-ignore
+        setAllKeywords(response);
+      })
+      .catch(function (error) {
+        console.log('error: ', error);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <div id="Home">
       <h2>
@@ -46,7 +65,9 @@ export const Home: FC = () => {
       </h2>
       <SearchBox onSearchHandler={onSearchHandler} isLoading={isLoading} />
       {groups.map((group, i) => {
-        return <GroupBox key={i} group={group} searchedKeywords={keywords} />;
+        return (
+          <GroupBox key={i} group={group} searchedKeywords={searchedKeywords} />
+        );
       })}
       {!!groups.length ? null : (
         <Empty description={'No Result'} style={{ marginTop: '20%' }} />

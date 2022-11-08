@@ -1,13 +1,12 @@
-FROM node:alpine
+FROM node:16-alpine
 WORKDIR /usr/node/app
-COPY package*.json ./
+COPY . .
 RUN npm install
 
 WORKDIR /usr/node/app/frontend
-COPY package*.json ./
 RUN npm install
 RUN npm run build
 
-WORKDIR /usr/app
+WORKDIR /usr/node/app
 EXPOSE 3001
 CMD ["npm", "run", "start"]
