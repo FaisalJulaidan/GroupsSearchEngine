@@ -1,10 +1,6 @@
 import './variables.less';
 import './App.less';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Layout } from 'antd';
 import { Home } from './pages';
 
@@ -14,14 +10,15 @@ function App() {
   return (
     <Router>
       <Layout>
-
-        <Header id='Header'>
-          <h1 className='title'>Groups Search Engine<sup>v1</sup></h1>
+        <Header id="Header">
+          <h1 className="title">
+            Groups Search Engine<sup>v1</sup>
+          </h1>
         </Header>
 
-        <Content id='Content'>
+        <Content id="Content">
           <Switch>
-             <Route path='/' exact>
+            <Route path="/" exact>
               <Home />
             </Route>
           </Switch>

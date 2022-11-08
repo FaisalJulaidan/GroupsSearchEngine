@@ -1,2 +1,2 @@
-export * from './SearchBox'
-export * from './GroupBox'
+export * from './SearchBox';
+export * from './GroupBox';
