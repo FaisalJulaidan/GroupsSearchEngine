@@ -1,1 +1,2 @@
-export * from './group';
+export * from './GroupType';
+export * from './MemberType';

@@ -1,4 +1,4 @@
-export interface group {
+export interface GroupType {
   id: string;
   orgCode: string;
   name: string;

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import './GroupBox.less';
-import { group } from '../types';
 
-import { Skeleton, Tag } from 'antd';
+import { GroupType } from '../types';
+import { Member } from './Member';
 
+import { Skeleton, Tag, Popover } from 'antd';
 import { MailTwoTone, PhoneTwoTone } from '@ant-design/icons';
 
 interface GroupBoxProps {
-  group: group;
+  group: GroupType;
   searchedKeywords: string[];
 }
 
@@ -16,6 +17,25 @@ export const GroupBox: React.FC<GroupBoxProps> = ({
   searchedKeywords,
 }) => {
   const [loading, setLoading] = useState(false); // Searching?
+
+  const membersList = [
+    {
+      name: 'Faisal Julaidan',
+      title: 'Software Engineer',
+      email: 'faisal.julaidan@aramco.com',
+    },
+    {
+      name: 'Omar Alharbi',
+      title: 'Cyber-security Specialist',
+      email: 'omar.alharbi@aramco.com',
+    },
+  ];
+  const members = (
+    <>
+      <Member member={membersList[0]} />
+      <Member member={membersList[1]} />
+    </>
+  );
 
   return (
     <div id="GroupBox" className="fade">
@@ -28,7 +48,14 @@ export const GroupBox: React.FC<GroupBoxProps> = ({
               <h2>
                 <b>{group.name}</b>
               </h2>
-              <span>8 Members</span>
+              <Popover
+                placement="left"
+                title={'Members'}
+                content={members}
+                trigger="click"
+              >
+                <span>8 Members</span>
+              </Popover>
             </div>
 
             <div className="leader">
